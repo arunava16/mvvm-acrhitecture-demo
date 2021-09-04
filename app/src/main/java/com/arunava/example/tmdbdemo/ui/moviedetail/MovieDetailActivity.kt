@@ -7,12 +7,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import coil.load
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieDetailBinding
 import com.arunava.example.tmdbdemo.service.TmdbRepository
 import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
-import com.arunava.example.tmdbdemo.service.remote.TmdbApiClient
 import com.arunava.example.tmdbdemo.service.remote.RemoteDataSource
+import com.arunava.example.tmdbdemo.service.remote.TmdbApiClient
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -66,7 +67,10 @@ class MovieDetailActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun populateDetails(movieDetail: GetMovieDetailsResponse, imagePrefix: String) {
         binding.apply {
-            backdropImage.load(imagePrefix + movieDetail.backdropPath)
+            Glide.with(this@MovieDetailActivity)
+                .load(imagePrefix + movieDetail.backdropPath)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(backdropImage)
             movieTitle.text =
                 "${movieDetail.title} (${movieDetail.releaseDate.substring(0, 4)})"
             releaseDate.text = movieDetail.releaseDate

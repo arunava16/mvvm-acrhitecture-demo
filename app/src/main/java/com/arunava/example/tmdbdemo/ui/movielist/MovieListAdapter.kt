@@ -4,10 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.arunava.example.tmdbdemo.databinding.LayoutMovieItemBinding
 import com.arunava.example.tmdbdemo.service.data.Images
 import com.arunava.example.tmdbdemo.service.data.Results
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class MovieListAdapter(
     private val context: Context,
@@ -30,9 +31,10 @@ class MovieListAdapter(
         val movie = movies[position]
         val posterUrl = imageConfig.secureBaseUrl + imageConfig.posterSizes[3] + movie.posterPath
 
-        holder.binding.poster.load(posterUrl) {
-            crossfade(true)
-        }
+        Glide.with(context)
+            .load(posterUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.binding.poster)
         holder.binding.movieName.text = movie.title
         holder.binding.movieDate.text = movie.releaseDate
         holder.binding.movieDescription.text = movie.overview
