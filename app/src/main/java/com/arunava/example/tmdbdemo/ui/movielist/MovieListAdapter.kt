@@ -58,7 +58,7 @@ class MovieListAdapter(
             }
         }
 
-        if (position == movies.size - 1 && !loadingNewItems && currentPage < totalPages) {
+        if (position == movies.size - 1 && !loadingNewItems && currentPage < totalPages && movies.size >= MAX_ITEMS_IN_PAGE) {
             loadingNewItems = true
             pageScrollListener.invoke(currentPage + 1)
         }
@@ -86,10 +86,15 @@ class MovieListAdapter(
             if (newList.size == MAX_ITEMS_IN_PAGE && currentPage < totalPages) {
                 // If max no of items are inserted, add loading view
                 movies.add(MovieItem(ViewType.LOADING))
-                newRangeSize++
+            } else {
+                movies.add(MovieItem(ViewType.EXHAUSTED))
             }
+            newRangeSize++
         } else {
             movies.addAll(movies.lastIndex, newList)
+            if (currentPage ==totalPages) {
+                movies[movies.lastIndex] = MovieItem(ViewType.EXHAUSTED)
+            }
             newRangeStartingPos =
                 movies.size - newList.size - (if (lastViewIsLoadingView()) 1 else 0)
         }
