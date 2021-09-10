@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.arunava.example.tmdbdemo.service.TmdbRepository
+import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 
 class MovieListViewModel(private val repository: TmdbRepository) : ViewModel() {
@@ -16,14 +16,25 @@ class MovieListViewModel(private val repository: TmdbRepository) : ViewModel() {
     private val _movies: MutableLiveData<HomeViewStates> by lazy { MutableLiveData() }
     val movies: LiveData<HomeViewStates> by lazy { _movies }
 
-    fun getMovies() {
-        val config = repository.getApiConfiguration().subscribeOn(Schedulers.io())
-        val movies = repository.getMovies().subscribeOn(Schedulers.io())
-        Singles.zip(movies, config)
+    fun getMovies(page: Int = 1) {
+        repository.getMovies(page)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                _movies.value =
-                    MoviesReceived(result.first.results, result.second.images)
+            .subscribe({ response ->
+                _movies.value = LoadMovies(
+                    movies = response.results.map {
+                        MovieItem(
+                            viewType = MovieListAdapter.ViewType.MOVIE,
+                            movieId = it.id,
+                            title = it.title,
+                            releaseDate = it.releaseDate,
+                            overview = it.overview,
+                            posterPath = it.posterPath
+                        )
+                    },
+                    currentPage = response.page,
+                    totalPages = response.totalPages
+                )
             }, {
                 _movies.value = ShowError(it.message ?: "Error, Please try again later")
             })

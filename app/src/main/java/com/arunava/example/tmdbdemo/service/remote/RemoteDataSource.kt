@@ -7,11 +7,11 @@ import io.reactivex.Single
 
 class RemoteDataSource private constructor(private val tmdbApi: TmdbApi) {
 
-    fun getMovies(): Single<DiscoverMovieResponse> {
-        return tmdbApi.discoverMovies()
+    fun getMovies(page: Int): Single<DiscoverMovieResponse> {
+        return tmdbApi.discoverMovies(page)
     }
 
-    fun getApiConfiguration() : Single<GetApiConfigurationResponse> {
+    fun getApiConfiguration(): Single<GetApiConfigurationResponse> {
         return tmdbApi.getApiConfiguration()
     }
 

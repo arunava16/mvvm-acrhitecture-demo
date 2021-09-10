@@ -39,6 +39,7 @@ class SplashActivity : AppCompatActivity() {
             when (it) {
                 is ConfigReceived -> {
                     val intent = Intent(this, MovieListActivity::class.java)
+                    intent.putExtra("image_config", it.imageConfig)
                     startActivity(intent)
                     finish()
                 }

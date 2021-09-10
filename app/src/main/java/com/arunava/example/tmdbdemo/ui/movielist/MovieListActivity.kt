@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieListBinding
 import com.arunava.example.tmdbdemo.service.TmdbRepository
-import com.arunava.example.tmdbdemo.service.data.Results
 import com.arunava.example.tmdbdemo.service.remote.RemoteDataSource
 import com.arunava.example.tmdbdemo.service.remote.TmdbApiClient
 import com.arunava.example.tmdbdemo.ui.moviedetail.MovieDetailActivity
+import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
 
 class MovieListActivity : AppCompatActivity() {
 
@@ -33,30 +33,41 @@ class MovieListActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var movieListAdapter: MovieListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initRecyclerView()
         attachObservers()
         binding.progressBar.isVisible = true
         movieListViewModel.getMovies()
     }
 
+    private fun initRecyclerView() {
+        movieListAdapter = MovieListAdapter(
+            imageConfig = intent.getParcelableExtra("image_config")!!, // TODO - need to look for better ways to remove not-null assertion
+            itemClickListener = { movie -> onMovieItemClick(movie) },
+            pageScrollListener = { page -> movieListViewModel.getMovies(page) }
+        )
+        binding.moviesList.adapter = movieListAdapter
+    }
+
     private fun attachObservers() {
-        movieListViewModel.movies.observe(this) {
-            when (it) {
-                is MoviesReceived -> {
+        movieListViewModel.movies.observe(this) { viewState ->
+            when (viewState) {
+                is LoadMovies -> {
                     binding.progressBar.isVisible = false
-                    binding.moviesList.adapter =
-                        MovieListAdapter(this, it.movies, it.imageConfig) { movie ->
-                            onMovieItemClick(movie)
-                        }
+                    with(viewState) {
+                        movieListAdapter.submitList(movies, currentPage, totalPages)
+                    }
                 }
                 is ShowError -> {
                     AlertDialog.Builder(this)
                         .setCancelable(false)
                         .setTitle("Error")
-                        .setMessage(it.errorMsg)
+                        .setMessage(viewState.errorMsg)
                         .setPositiveButton("Ok") { dialog, _ ->
                             dialog.dismiss()
                             finish()
@@ -67,9 +78,9 @@ class MovieListActivity : AppCompatActivity() {
         }
     }
 
-    private fun onMovieItemClick(movie: Results) {
+    private fun onMovieItemClick(movie: MovieItem) {
         val movieDetailIntent = Intent(this, MovieDetailActivity::class.java).apply {
-            putExtra("movieId", movie.id)
+            putExtra("movieId", movie.movieId)
         }
         startActivity(movieDetailIntent)
     }

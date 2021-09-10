@@ -6,11 +6,12 @@ import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TmdbApi {
 
     @GET("discover/movie")
-    fun discoverMovies(): Single<DiscoverMovieResponse>
+    fun discoverMovies(@Query("page") page: Int): Single<DiscoverMovieResponse>
 
     @GET("configuration")
     fun getApiConfiguration(): Single<GetApiConfigurationResponse>

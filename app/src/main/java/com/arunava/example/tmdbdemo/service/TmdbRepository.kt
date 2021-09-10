@@ -20,8 +20,8 @@ class TmdbRepository private constructor(private val remoteDataSource: RemoteDat
         }
     }
 
-    fun getMovies(): Single<DiscoverMovieResponse> {
-        return remoteDataSource.getMovies()
+    fun getMovies(page: Int): Single<DiscoverMovieResponse> {
+        return remoteDataSource.getMovies(page)
     }
 
     fun getMovieDetails(movieId: Int): Single<GetMovieDetailsResponse> {
