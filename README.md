@@ -1,1 +1,1 @@
-# mvvm-acrhitecture-demo
+# mvvm-architecture-demo
