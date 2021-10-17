@@ -4,36 +4,24 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieDetailBinding
-import com.arunava.example.tmdbdemo.service.TmdbRepository
 import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
-import com.arunava.example.tmdbdemo.service.remote.RemoteDataSource
-import com.arunava.example.tmdbdemo.service.remote.TmdbApiClient
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : DaggerAppCompatActivity() {
 
     private val binding by lazy { ActivityMovieDetailBinding.inflate(layoutInflater) }
 
     private val movieId by lazy { intent.extras?.getInt("movieId") }
 
-    private val movieDetailViewModel: MovieDetailViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieDetailViewModel(
-                    TmdbRepository.getInstance(
-                        RemoteDataSource.getInstance(
-                            TmdbApiClient.tmdbService
-                        )
-                    )
-                ) as T
-            }
-        }
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val movieDetailViewModel: MovieDetailViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

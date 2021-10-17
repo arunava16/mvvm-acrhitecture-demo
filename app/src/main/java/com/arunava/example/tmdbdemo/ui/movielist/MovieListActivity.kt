@@ -2,36 +2,26 @@ package com.arunava.example.tmdbdemo.ui.movielist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieListBinding
-import com.arunava.example.tmdbdemo.service.TmdbRepository
-import com.arunava.example.tmdbdemo.service.remote.RemoteDataSource
-import com.arunava.example.tmdbdemo.service.remote.TmdbApiClient
 import com.arunava.example.tmdbdemo.ui.moviedetail.MovieDetailActivity
 import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MovieListActivity : AppCompatActivity() {
+class MovieListActivity : DaggerAppCompatActivity() {
 
     private val binding by lazy { ActivityMovieListBinding.inflate(layoutInflater) }
 
-    private val movieListViewModel: MovieListViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieListViewModel(
-                    TmdbRepository.getInstance(
-                        RemoteDataSource.getInstance(
-                            TmdbApiClient.tmdbService
-                        )
-                    )
-                ) as T
-            }
-        }
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val movieListViewModel: MovieListViewModel by viewModels { viewModelFactory }
 
     private lateinit var movieListAdapter: MovieListAdapter
 

@@ -8,8 +8,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MovieDetailViewModel(private val repository: TmdbRepository) : ViewModel() {
+class MovieDetailViewModel @Inject constructor(
+    private val repository: TmdbRepository
+) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 

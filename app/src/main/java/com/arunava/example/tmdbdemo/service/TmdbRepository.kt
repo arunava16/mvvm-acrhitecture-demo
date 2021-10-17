@@ -5,8 +5,9 @@ import com.arunava.example.tmdbdemo.service.data.GetApiConfigurationResponse
 import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
 import com.arunava.example.tmdbdemo.service.remote.RemoteDataSource
 import io.reactivex.Single
+import javax.inject.Inject
 
-class TmdbRepository private constructor(private val remoteDataSource: RemoteDataSource) {
+class TmdbRepository @Inject constructor(private val remoteDataSource: RemoteDataSource) {
 
     private var apiConfigurationResponse: GetApiConfigurationResponse? = null
 
@@ -26,19 +27,5 @@ class TmdbRepository private constructor(private val remoteDataSource: RemoteDat
 
     fun getMovieDetails(movieId: Int): Single<GetMovieDetailsResponse> {
         return remoteDataSource.getMovieDetails(movieId)
-    }
-
-    companion object {
-
-        private lateinit var instance: TmdbRepository
-
-        @JvmStatic
-        @Synchronized
-        fun getInstance(remoteDataSource: RemoteDataSource): TmdbRepository {
-            if (!::instance.isInitialized) {
-                instance = TmdbRepository(remoteDataSource)
-            }
-            return instance
-        }
     }
 }

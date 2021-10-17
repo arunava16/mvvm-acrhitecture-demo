@@ -8,8 +8,11 @@ import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MovieListViewModel(private val repository: TmdbRepository) : ViewModel() {
+class MovieListViewModel @Inject constructor(
+    private val repository: TmdbRepository
+) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
