@@ -24,10 +24,10 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun attachObservers() {
-        splashViewModel.apiConfig.observe(this, {
+        splashViewModel.viewState.observe(this, {
             when (it) {
-                is ConfigReceived -> navigateToMovieList(it.imageConfig)
-                is ShowErrorDialog -> showErrorDialog(it.errorMsg)
+                is SplashViewStates.ConfigReceived -> navigateToMovieList(it.imageConfig)
+                is SplashViewStates.ShowErrorDialog -> showErrorDialog(it.errorMsg)
             }
         })
     }

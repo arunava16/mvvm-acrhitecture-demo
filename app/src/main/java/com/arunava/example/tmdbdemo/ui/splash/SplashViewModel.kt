@@ -3,7 +3,8 @@ package com.arunava.example.tmdbdemo.ui.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.arunava.example.tmdbdemo.service.TmdbRepository
+import com.arunava.example.tmdbdemo.service.repository.Resource
+import com.arunava.example.tmdbdemo.service.repository.TmdbRepository
 import com.arunava.example.tmdbdemo.ui.commons.data.ImageConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,28 +15,35 @@ class SplashViewModel @Inject constructor(private val repository: TmdbRepository
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    private val _apiConfig: MutableLiveData<SplashViewStates> by lazy { MutableLiveData() }
-    val apiConfig: LiveData<SplashViewStates> by lazy { _apiConfig }
+    private val _viewState: MutableLiveData<SplashViewStates> by lazy { MutableLiveData() }
+    val viewState: LiveData<SplashViewStates> by lazy { _viewState }
 
     fun getConfig() {
         repository.getApiConfiguration()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                // TODO - Save this response to local db/cache
-
-                // Then move to next activity
-                _apiConfig.postValue(
-                    ConfigReceived(
-                        ImageConfig(
-                            baseUrl = it.images.secureBaseUrl,
-                            imageSize = it.images.posterSizes[3]
-                        )
-                    )
-                )
-            }, {
-                _apiConfig.postValue(ShowErrorDialog(it.message.toString()))
-            })
+            .subscribe { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        // We don't need this here
+                    }
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            _viewState.postValue(
+                                SplashViewStates.ConfigReceived(
+                                    ImageConfig(
+                                        resource.data.images.secureBaseUrl,
+                                        resource.data.images.posterSizes[3]
+                                    )
+                                )
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                        _viewState.postValue(SplashViewStates.ShowErrorDialog(resource.message.toString()))
+                    }
+                }
+            }
             .also { compositeDisposable.add(it) }
     }
 

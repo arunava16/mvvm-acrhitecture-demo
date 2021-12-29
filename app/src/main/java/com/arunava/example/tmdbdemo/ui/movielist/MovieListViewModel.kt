@@ -3,7 +3,7 @@ package com.arunava.example.tmdbdemo.ui.movielist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.arunava.example.tmdbdemo.service.TmdbRepository
+import com.arunava.example.tmdbdemo.service.repository.TmdbRepository
 import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

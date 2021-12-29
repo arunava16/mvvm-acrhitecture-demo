@@ -1,6 +1,6 @@
 package com.arunava.example.tmdbdemo.ui.moviedetail
 
-import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
+import com.arunava.example.tmdbdemo.service.remote.data.GetMovieDetailsResponse
 
 sealed class MovieDetailViewStates
 

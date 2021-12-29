@@ -1,8 +1,8 @@
 package com.arunava.example.tmdbdemo.service.remote
 
-import com.arunava.example.tmdbdemo.service.data.DiscoverMovieResponse
-import com.arunava.example.tmdbdemo.service.data.GetApiConfigurationResponse
-import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
+import com.arunava.example.tmdbdemo.service.remote.data.DiscoverMovieResponse
+import com.arunava.example.tmdbdemo.service.remote.data.GetApiConfigurationResponse
+import com.arunava.example.tmdbdemo.service.remote.data.GetMovieDetailsResponse
 import io.reactivex.Single
 import javax.inject.Inject
 

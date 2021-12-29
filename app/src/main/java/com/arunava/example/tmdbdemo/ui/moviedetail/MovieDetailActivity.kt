@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieDetailBinding
-import com.arunava.example.tmdbdemo.service.data.GetMovieDetailsResponse
+import com.arunava.example.tmdbdemo.service.remote.data.GetMovieDetailsResponse
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import dagger.android.support.DaggerAppCompatActivity

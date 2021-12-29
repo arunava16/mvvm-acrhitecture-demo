@@ -1,4 +1,4 @@
-package com.arunava.example.tmdbdemo.service.data
+package com.arunava.example.tmdbdemo.service.remote.data
 
 import com.google.gson.annotations.SerializedName
 
