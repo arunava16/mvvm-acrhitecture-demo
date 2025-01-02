@@ -88,5 +88,6 @@ object AppModule {
     @Singleton
     fun provideTmdbDatabase(application: Application): TmdbRoomDatabase =
         Room.databaseBuilder(application, TmdbRoomDatabase::class.java, "db")
+            .fallbackToDestructiveMigration()
             .build()
 }
