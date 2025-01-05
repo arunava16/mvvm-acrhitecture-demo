@@ -11,9 +11,12 @@
         android:roundIcon="@drawable/ic_tmdb_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.moviedetail.MovieDetailActivity" />
+        <activity
+            android:name=".ui.moviedetail.MovieDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.movielist.MovieListActivity" />
+        <activity
+            android:name=".ui.movielist.MovieListActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -4,24 +4,23 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieDetailBinding
 import com.arunava.example.tmdbdemo.service.remote.data.GetMovieDetailsResponse
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class MovieDetailActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MovieDetailActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMovieDetailBinding.inflate(layoutInflater) }
 
     private val movieId by lazy { intent.extras?.getInt("movieId") }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val movieDetailViewModel: MovieDetailViewModel by viewModels { viewModelFactory }
+    private val movieDetailViewModel: MovieDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

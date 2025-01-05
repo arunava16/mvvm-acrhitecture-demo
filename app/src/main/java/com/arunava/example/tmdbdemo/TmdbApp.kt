@@ -1,12 +1,7 @@
 package com.arunava.example.tmdbdemo
 
-import com.arunava.example.tmdbdemo.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.support.DaggerApplication
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class TmdbApp : DaggerApplication() {
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.factory().create(this)
-    }
-}
+@HiltAndroidApp
+class TmdbApp : Application()

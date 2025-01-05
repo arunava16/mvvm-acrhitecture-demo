@@ -2,7 +2,6 @@ package com.arunava.example.tmdbdemo.ui.movielist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.arunava.example.tmdbdemo.databinding.ActivityMovieListBinding
 import com.arunava.example.tmdbdemo.ui.moviedetail.MovieDetailActivity
 import com.arunava.example.tmdbdemo.ui.movielist.data.MovieItem
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class MovieListActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MovieListActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMovieListBinding.inflate(layoutInflater) }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val movieListViewModel: MovieListViewModel by viewModels { viewModelFactory }
+    private val movieListViewModel: MovieListViewModel by viewModels()
 
     private lateinit var movieListAdapter: MovieListAdapter
 

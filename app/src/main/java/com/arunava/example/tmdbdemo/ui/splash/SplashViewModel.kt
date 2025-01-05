@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.arunava.example.tmdbdemo.service.repository.Resource
 import com.arunava.example.tmdbdemo.service.repository.TmdbRepository
 import com.arunava.example.tmdbdemo.ui.commons.data.ImageConfig
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+@HiltViewModel
 class SplashViewModel @Inject constructor(private val repository: TmdbRepository) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }

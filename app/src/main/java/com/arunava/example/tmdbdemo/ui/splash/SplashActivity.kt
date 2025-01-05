@@ -4,18 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.arunava.example.tmdbdemo.ui.commons.data.ImageConfig
 import com.arunava.example.tmdbdemo.ui.movielist.MovieListActivity
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class SplashActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class SplashActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val splashViewModel: SplashViewModel by viewModels { viewModelFactory }
+    private val splashViewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +21,12 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun attachObservers() {
-        splashViewModel.viewState.observe(this, {
+        splashViewModel.viewState.observe(this) {
             when (it) {
                 is SplashViewStates.ConfigReceived -> navigateToMovieList(it.imageConfig)
                 is SplashViewStates.ShowErrorDialog -> showErrorDialog(it.errorMsg)
             }
-        })
+        }
     }
 
     private fun navigateToMovieList(imageConfig: ImageConfig) {
